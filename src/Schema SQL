@@ -1,4 +1,4 @@
--- Distribuidores
+
 CREATE TABLE IF NOT EXISTS distributors (
     distributor_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -6,13 +6,13 @@ CREATE TABLE IF NOT EXISTS distributors (
     contact_phone VARCHAR(20)
 );
 
--- Gêneros
+
 CREATE TABLE IF NOT EXISTS genres (
     genre_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL
 );
 
--- Cinemas
+
 CREATE TABLE IF NOT EXISTS cinema (
     cinema_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS cinema (
     address VARCHAR(150)
 );
 
--- Filmes
+
 CREATE TABLE IF NOT EXISTS movies (
     movie_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(150) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS movies (
     FOREIGN KEY (genre_id) REFERENCES genres(genre_id)
 );
 
--- Restrições de filmes
+
 CREATE TABLE IF NOT EXISTS movie_restrictions (
     movie_id INT PRIMARY KEY,
     age_limit INT,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS movie_restrictions (
     FOREIGN KEY (movie_id) REFERENCES movies(movie_id) ON DELETE CASCADE
 );
 
--- Salas
+
 CREATE TABLE IF NOT EXISTS halls (
     hall_id INT AUTO_INCREMENT PRIMARY KEY,
     cinema_id INT,
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS halls (
     FOREIGN KEY (cinema_id) REFERENCES cinema(cinema_id)
 );
 
--- Sessões
+
 CREATE TABLE IF NOT EXISTS showings (
     showing_id INT AUTO_INCREMENT PRIMARY KEY,
     movie_id INT,
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS showings (
     FOREIGN KEY (hall_id) REFERENCES halls(hall_id)
 );
 
--- Promoções
+
 CREATE TABLE IF NOT EXISTS promotions (
     promotion_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100),
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS promotions (
     end_date DATE
 );
 
--- Promoções aplicadas às sessões
+
 CREATE TABLE IF NOT EXISTS showing_promotions (
     showing_id INT,
     promotion_id INT,
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS showing_promotions (
     FOREIGN KEY (promotion_id) REFERENCES promotions(promotion_id) ON DELETE CASCADE
 );
 
--- Usuários
+
 CREATE TABLE IF NOT EXISTS users (
     users_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100),
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Funcionários
+
 CREATE TABLE IF NOT EXISTS employees (
     employees_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100),
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS employees (
     FOREIGN KEY (cinema_id) REFERENCES cinema(cinema_id)
 );
 
--- Ingressos
+
 CREATE TABLE IF NOT EXISTS tickets (
     ticket_id INT AUTO_INCREMENT PRIMARY KEY,
     showing_id INT,
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS tickets (
     FOREIGN KEY (user_id) REFERENCES users(users_id)
 );
 
--- Pagamentos
+
 CREATE TABLE IF NOT EXISTS payments (
     payment_id INT AUTO_INCREMENT PRIMARY KEY,
     ticket_id INT UNIQUE,
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS payments (
     FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id) ON DELETE CASCADE
 );
 
--- Reviews
+
 CREATE TABLE IF NOT EXISTS reviews (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS reviews (
     FOREIGN KEY (movie_id) REFERENCES movies(movie_id)
 );
 
--- Filmes e múltiplos gêneros (n:n)
+
 CREATE TABLE IF NOT EXISTS movie_genres (
     movie_id INT,
     genre_id INT,
@@ -141,72 +141,304 @@ CREATE TABLE IF NOT EXISTS movie_genres (
     FOREIGN KEY (genre_id) REFERENCES genres(genre_id) ON DELETE CASCADE
 );
 
+
 INSERT INTO cinema (cinema_id, name, city, state, address) VALUES
-(1, 'CineMax', 'São Paulo', 'SP', 'Rua A, 123'),
-(2, 'MoviePalace', 'Rio de Janeiro', 'RJ', 'Avenida B, 456'),
-(3, 'StarCinema', 'Belo Horizonte', 'MG', 'Praça C, 789');
+(1,'CineMax Central','São Paulo','SP','Rua A, 123'),
+(2,'MoviePalace RJ','Rio de Janeiro','RJ','Avenida B, 456'),
+(3,'StarCinema BH','Belo Horizonte','MG','Praça C, 789'),
+(4,'Plaza Cine','Curitiba','PR','Rua D, 101'),
+(5,'Centro Filmes','Porto Alegre','RS','Av. E, 202');
 
 INSERT INTO halls (hall_id, cinema_id, hall_number, capacity) VALUES
-(1, 1, 1, 100),
-(2, 1, 2, 120),
-(3, 2, 1, 80),
-(4, 3, 1, 90);
+(1,1,1,100),(2,1,2,120),(3,1,3,80),
+(4,2,1,90),(5,2,2,110),(6,2,3,70),
+(7,3,1,95),(8,3,2,85),(9,3,3,60),
+(10,4,1,120),(11,4,2,90),(12,4,3,75),
+(13,5,1,110),(14,5,2,80),(15,5,3,60);
 
 INSERT INTO distributors (distributor_id, name, country, contact_phone) VALUES
-(1, 'Marvel Studios', 'USA', '+1 555-1234'),
-(2, 'Warner Bros', 'USA', '+1 555-5678'),
-(3, 'Disney', 'USA', '+1 555-9012');
+(1,'Marvel Studios','USA','+1-555-0101'),
+(2,'Warner Bros','USA','+1-555-0202'),
+(3,'Disney','USA','+1-555-0303'),
+(4,'Lionsgate','USA','+1-555-0404'),
+(5,'Universal Pictures','USA','+1-555-0505'),
+(6,'A24','USA','+1-555-0606'),
+(7,'Paramount','USA','+1-555-0707'),
+(8,'StudioCanal','FR','+33-1-800-0808'),
+(9,'Sony Pictures','USA','+1-555-0909'),
+(10,'Neon','USA','+1-555-1111');
 
 INSERT INTO genres (genre_id, name) VALUES
-(1, 'Action'),
-(2, 'Sci-Fi'),
-(3, 'Animation');
+(1,'Action'),
+(2,'Sci-Fi'),
+(3,'Animation'),
+(4,'Drama'),
+(5,'Comedy'),
+(6,'Horror'),
+(7,'Thriller'),
+(8,'Romance'),
+(9,'Documentary'),
+(10,'Fantasy');
 
 INSERT INTO movies (movie_id, title, release_date, duration_minutes, distributor_id, genre_id) VALUES
-(1, 'Avengers', '2012-05-04', 150, 1, 1),
-(2, 'Inception', '2010-07-16', 148, 2, 2),
-(3, 'The Lion King', '1994-06-24', 88, 3, 3);
+(1,'Avengers: Reunion','2024-12-05',140,1,1),
+(2,'Inception: Echo','2025-01-10',125,2,2),
+(3,'The Lion King: Return','2025-02-14',95,3,3),
+(4,'Ocean Valley','2025-01-20',104,4,2),
+(5,'Silent Horizon','2025-02-12',112,5,2),
+(6,'Midnight Parade','2024-11-20',98,6,7),
+(7,'The Last Orchard','2025-03-03',121,7,4),
+(8,'Quantum Drift','2025-03-18',129,8,2),
+(9,'Paper Wings','2025-04-01',95,9,3),
+(10,'Steel Sonata','2025-04-15',137,10,1),
+(11,'Neon Alley','2025-05-05',101,1,2),
+(12,'Hidden Lantern','2025-05-20',87,2,3),
+(13,'Echoes of Summer','2024-12-18',110,3,4),
+(14,'Gravity Road','2025-06-11',123,4,2),
+(15,'Cedar House','2025-06-25',90,5,5),
+(16,'Aurora Protocol','2024-11-30',140,6,2),
+(17,'Velvet Storm','2025-07-10',99,7,1),
+(18,'Map of Ash','2025-07-22',106,8,4),
+(19,'Copper City','2025-08-01',115,9,1),
+(20,'Lighthouse Keep','2025-08-12',92,10,3),
+(21,'Silent Overture','2025-08-25',108,1,4),
+(22,'Binary Garden','2025-09-02',125,2,2),
+(23,'Stone & Feather','2025-09-12',94,3,5),
+(24,'Neptunes Call','2024-12-25',133,4,2),
+(25,'Glass Harbor','2025-10-05',102,5,3),
+(26,'Paper Moon','2025-10-18',88,6,3),
+(27,'Chrome Horizon','2025-11-01',130,7,1),
+(28,'The Garden of Maps','2025-11-10',105,8,4),
+(29,'Midnight Engine','2025-11-20',117,9,7),
+(30,'Whisper Field','2025-12-01',96,10,3),
+(31,'Iron Petal','2025-12-10',126,1,1),
+(32,'Silent Harbor','2025-02-28',89,2,3),
+(33,'Polar Lantern','2025-03-12',114,3,2),
+(34,'The Weaver','2025-04-22',100,4,5),
+(35,'Silver Compass','2025-05-30',119,5,1),
+(36,'Desert Choir','2025-06-07',91,6,3),
+(37,'Orbit of Days','2025-07-28',128,7,2),
+(38,'Paper Forest','2025-08-16',97,8,5),
+(39,'Cobalt Rain','2025-09-25',121,9,1),
+(40,'Echo Ridge','2025-10-30',103,10,5);
 
 INSERT INTO movie_genres (movie_id, genre_id) VALUES
-(1, 1), 
-(2, 2), 
-(3, 3); 
+(1,1),(2,2),(3,3),(4,2),(5,2),(6,7),(7,4),(8,2),(9,3),(10,1),
+(11,2),(12,3),(13,4),(14,2),(15,5),(16,2),(17,1),(18,4),(19,1),(20,3),
+(21,4),(22,2),(23,5),(24,2),(25,3),(26,3),(27,1),(28,4),(29,7),(30,3),
+(31,1),(32,3),(33,2),(34,5),(35,1),(36,3),(37,2),(38,5),(39,1),(40,5);
 
 INSERT INTO movie_restrictions (movie_id, age_limit, explanation) VALUES
-(1, 13, 'Violence and mild language'),
-(2, 16, 'Complex themes and action sequences'),
-(3, 0, 'Suitable for all ages');
-
-INSERT INTO showings (showing_id, movie_id, hall_id, show_date, show_time, price) VALUES
-(1, 1, 1, '2025-11-15', '18:00:00', 30.00),
-(2, 2, 2, '2025-11-15', '20:00:00', 35.00),
-(3, 3, 3, '2025-11-15', '14:00:00', 25.00);
+(1,13,'Violence and moderate language'),
+(2,16,'Complex sci-fi themes'),
+(3,0,'Family-friendly'),
+(4,12,'Action scenes'),
+(5,14,'Mild strong themes'),
+(6,16,'Tense scenes and violence'),
+(7,0,'Family drama'),
+(8,14,'Sci-fi action'),
+(9,0,'Animated content'),
+(10,16,'Intense action and sequences'),
+(11,12,'Mild action'),
+(12,0,'Children friendly'),
+(13,10,'Some thematic elements'),
+(14,14,'Action and sci-fi elements'),
+(15,0,'Light comedy/drama'),
+(16,16,'Strong sci-fi action'),
+(17,14,'Action scenes'),
+(18,12,'Some intense moments'),
+(19,16,'Violence and mature themes'),
+(20,0,'Family-oriented'),
+(21,14,'Mild violence'),
+(22,16,'Complex sci-fi themes'),
+(23,0,'Light family themes'),
+(24,14,'Action sequences'),
+(25,0,'Family-friendly'),
+(26,0,'Light-hearted'),
+(27,16,'Intense action'),
+(28,0,'Drama for all ages'),
+(29,16,'Action and peril'),
+(30,0,'Family-friendly'),
+(31,16,'Strong action'),
+(32,0,'Gentle drama'),
+(33,12,'Mild sci-fi elements'),
+(34,0,'General audience'),
+(35,16,'Action and complex themes'),
+(36,0,'Family musical elements'),
+(37,14,'Sci-fi suspense'),
+(38,0,'Family drama'),
+(39,16,'Violence and tension'),
+(40,0,'Gentle family themes');
 
 INSERT INTO promotions (promotion_id, name, discount_percent, start_date, end_date) VALUES
-(1, 'Weekend Special', 20, '2025-11-01', '2025-11-30'),
-(2, 'Student Discount', 15, '2025-11-01', '2025-12-31');
+(1,'Weekend Special',20,'2025-01-01','2025-12-31'),
+(2,'Student Discount',15,'2025-02-01','2025-12-31'),
+(3,'Summer Promo',25,'2025-06-01','2025-08-31'),
+(4,'Holiday Offer',30,'2025-12-01','2025-12-31'),
+(5,'Midweek Deal',10,'2025-03-01','2025-11-30'),
+(6,'Morning Saver',12,'2025-01-01','2025-12-31'),
+(7,'Family Pack',18,'2025-04-01','2025-10-31'),
+(8,'Late Night',15,'2025-05-01','2025-10-31'),
+(9,'Festival Promo',22,'2025-09-01','2025-09-30'),
+(10,'Anniversary',20,'2025-07-01','2025-07-31');
+
+INSERT INTO showings (showing_id, movie_id, hall_id, show_date, show_time, price) VALUES
+(1,1,1,'2025-01-05','18:00:00',35.00),
+(2,2,2,'2025-01-12','20:00:00',36.00),
+(3,3,3,'2025-02-10','14:00:00',25.00),
+(4,4,4,'2025-02-15','19:30:00',30.00),
+(5,5,5,'2025-03-02','21:00:00',32.00),
+(6,6,6,'2025-03-18','17:00:00',28.00),
+(7,7,7,'2025-03-25','20:15:00',34.00),
+(8,8,8,'2025-04-02','19:00:00',37.00),
+(9,9,9,'2025-04-12','16:30:00',26.00),
+(10,10,10,'2025-04-20','21:30:00',40.00),
+(11,11,11,'2025-05-06','18:45:00',33.00),
+(12,12,12,'2025-05-15','15:00:00',24.00),
+(13,13,13,'2025-05-25','20:00:00',31.00),
+(14,14,14,'2025-06-05','20:30:00',35.00),
+(15,15,15,'2025-06-12','16:30:00',27.00),
+(16,16,1,'2025-06-20','18:00:00',38.00),
+(17,17,2,'2025-07-01','21:15:00',34.00),
+(18,18,3,'2025-07-07','14:45:00',26.00),
+(19,19,4,'2025-07-15','20:00:00',39.00),
+(20,20,5,'2025-07-23','17:00:00',29.00),
+(21,21,6,'2025-08-02','19:30:00',33.00),
+(22,22,7,'2025-08-10','20:45:00',36.00),
+(23,23,8,'2025-08-18','15:00:00',25.00),
+(24,24,9,'2025-08-26','18:30:00',34.00),
+(25,25,10,'2025-09-01','20:00:00',32.00),
+(26,26,11,'2025-09-07','13:30:00',22.00),
+(27,27,12,'2025-09-15','19:00:00',37.00),
+(28,28,13,'2025-09-21','17:15:00',30.00),
+(29,29,14,'2025-09-28','20:30:00',36.00),
+(30,30,15,'2025-10-03','16:00:00',28.00),
+(31,31,1,'2025-10-10','21:00:00',42.00),
+(32,32,2,'2025-10-17','15:30:00',24.00),
+(33,33,3,'2025-10-24','19:45:00',33.00),
+(34,34,4,'2025-10-31','18:00:00',31.00),
+(35,35,5,'2025-11-07','20:15:00',38.00),
+(36,36,6,'2025-11-14','14:00:00',25.00),
+(37,37,7,'2025-11-20','19:00:00',39.00),
+(38,38,8,'2025-11-25','17:30:00',29.00),
+(39,39,9,'2025-12-05','20:00:00',40.00),
+(40,40,10,'2025-12-12','16:30:00',30.00),
+(41,1,11,'2025-02-20','18:00:00',35.00),
+(42,2,12,'2025-03-10','20:00:00',36.00),
+(43,3,13,'2025-04-08','14:00:00',25.00),
+(44,4,14,'2025-05-02','19:30:00',30.00),
+(45,5,15,'2025-06-11','21:00:00',32.00),
+(46,6,1,'2025-07-09','17:00:00',28.00),
+(47,7,2,'2025-08-13','20:15:00',34.00),
+(48,8,3,'2025-09-02','19:00:00',37.00),
+(49,9,4,'2025-10-06','16:30:00',26.00),
+(50,10,5,'2025-11-18','21:30:00',40.00);
 
 INSERT INTO showing_promotions (showing_id, promotion_id) VALUES
-(1, 1),
-(2, 2);
+(1,1),(2,2),(5,1),(7,7),(10,6),(14,3),(17,8),(22,3),(25,2),(27,10),
+(29,3),(31,4),(35,1),(37,9),(39,4),(41,6),(44,5),(45,7),(48,8),(50,1);
 
 INSERT INTO users (users_id, name, email, phone) VALUES
-(1, 'Alice', 'alice@email.com', '11999990001'),
-(2, 'Bob', 'bob@email.com', '11999990002'),
-(3, 'Charlie', 'charlie@email.com', '11999990003');
+(1,'Alice','alice@example.com','11990001001'),
+(2,'Bob','bob@example.com','11990001002'),
+(3,'Charlie','charlie@example.com','11990001003'),
+(4,'Maria','maria@example.com','11990001004'),
+(5,'João','joao@example.com','11990001005'),
+(6,'Fernanda','fernanda@example.com','11990001006'),
+(7,'Lucas','lucas@example.com','11990001007'),
+(8,'Mariana','mariana@example.com','11990001008'),
+(9,'Rafael','rafael@example.com','11990001009'),
+(10,'Beatriz','beatriz@example.com','11990001010'),
+(11,'Gustavo','gustavo@example.com','11990001011'),
+(12,'Camila','camila@example.com','11990001012'),
+(13,'Pedro','pedro@example.com','11990001013'),
+(14,'Paula','paula@example.com','11990001014'),
+(15,'Thiago','thiago@example.com','11990001015'),
+(16,'Aline','aline@example.com','11990001016'),
+(17,'Diego','diego@example.com','11990001017'),
+(18,'Larissa','larissa@example.com','11990001018'),
+(19,'Mateus','mateus@example.com','11990001019'),
+(20,'Bianca','bianca@example.com','11990001020'),
+(21,'Victor','victor@example.com','11990001021'),
+(22,'Larson','larson@example.com','11990001022'),
+(23,'Renata','renata@example.com','11990001023'),
+(24,'Bruno','bruno@example.com','11990001024'),
+(25,'Priscila','priscila@example.com','11990001025'),
+(26,'André','andre@example.com','11990001026'),
+(27,'Sofia','sofia@example.com','11990001027'),
+(28,'Igor','igor@example.com','11990001028'),
+(29,'Vanessa','vanessa@example.com','11990001029'),
+(30,'Rodrigo','rodrigo@example.com','11990001030');
 
 INSERT INTO employees (employees_id, name, cinema_id, hire_date, role) VALUES
-(1, 'Daniel', 1, '2022-01-10', 'Manager'),
-(2, 'Eva', 2, '2023-03-15', 'Cashier');
+(1,'Daniel',1,'2019-01-10','Manager'),
+(2,'Eva',2,'2020-03-15','Cashier'),
+(3,'Marcos',3,'2021-06-20','Projectionist'),
+(4,'Rita',4,'2018-09-05','Manager'),
+(5,'Paulo',5,'2022-02-12','Technician'),
+(6,'Sérgio',1,'2020-11-01','Cashier'),
+(7,'Ana',2,'2019-07-18','Supervisor'),
+(8,'Clara',3,'2021-12-03','Cleaner'),
+(9,'Bruna',4,'2020-05-22','Box Office'),
+(10,'Roberto',5,'2017-08-30','Manager');
 
 INSERT INTO tickets (ticket_id, showing_id, user_id, seat_number) VALUES
-(1, 1, 1, 'A1'),
-(2, 2, 2, 'B2');
+(1,1,1,'A1'),
+(2,2,2,'B2'),
+(3,3,3,'C3'),
+(4,4,4,'D4'),
+(5,5,5,'E5'),
+(6,6,6,'F6'),
+(7,7,7,'G1'),
+(8,8,8,'H2'),
+(9,9,9,'A3'),
+(10,10,10,'B4'),
+(11,11,11,'C5'),
+(12,12,12,'D6'),
+(13,13,13,'E1'),
+(14,14,14,'F2'),
+(15,15,15,'G3'),
+(16,16,16,'H4'),
+(17,17,17,'A5'),
+(18,18,18,'B6'),
+(19,19,19,'C1'),
+(20,20,20,'D2');
 
 INSERT INTO payments (payment_id, ticket_id, payment_method, paid_value) VALUES
-(1, 1, 'Credit Card', 30.00),
-(2, 2, 'Cash', 35.00);
+(1,1,'Credit Card',35.00),
+(2,2,'Debit Card',36.00),
+(3,3,'Pix',25.00),
+(4,4,'Credit Card',30.00),
+(5,5,'Cash',32.00),
+(6,6,'Credit Card',28.00),
+(7,7,'Debit Card',34.00),
+(8,8,'Pix',37.00),
+(9,9,'Cash',26.00),
+(10,10,'Credit Card',40.00),
+(11,11,'Debit Card',33.00),
+(12,12,'Pix',24.00),
+(13,13,'Cash',31.00),
+(14,14,'Credit Card',35.00),
+(15,15,'Pix',27.00),
+(16,16,'Debit Card',38.00),
+(17,17,'Credit Card',34.00),
+(18,18,'Pix',26.00),
+(19,19,'Cash',39.00),
+(20,20,'Credit Card',29.00);
 
 INSERT INTO reviews (review_id, user_id, movie_id, rating, comment, review_date) VALUES
-(1, 1, 1, 5, 'Amazing movie!', '2025-11-10'),
-(2, 2, 2, 4, 'Great mind-bending film.', '2025-11-11');
+(1,1,1,5,'Fantastic return to the saga.','2025-01-06'),
+(2,2,2,4,'Smart and thrilling.','2025-01-13'),
+(3,3,3,4,'Great for the family.','2025-02-11'),
+(4,4,4,3,'Good effects, plot ok.','2025-02-16'),
+(5,5,5,4,'Enjoyed the sci-fi elements.','2025-03-03'),
+(6,6,6,3,'Tense and dark.','2025-03-20'),
+(7,7,7,4,'Warm family drama.','2025-03-26'),
+(8,8,8,5,'Visual feast.','2025-04-03'),
+(9,9,9,4,'Nice animation.','2025-04-13'),
+(10,10,10,5,'Powerful and epic.','2025-04-21'),
+(11,11,11,4,'Stylish and modern.','2025-05-07'),
+(12,12,12,3,'Cute for kids.','2025-05-16'),
+(13,13,13,4,'Thoughtful drama.','2025-05-26'),
+(14,14,14,4,'Good pacing.','2025-06-06'),
+(15,15,15,3,'Light and funny.','2025-06-13');
