@@ -6,10 +6,9 @@ CREATE TABLE distributors (
 );
 
 CREATE TABLE genres (
-    genre_id INT AUTO_INCREMENT PRIMARY KEY,
+    genre_id INT PRIMARY KEY,
     name VARCHAR(50) NOT NULL
 );
-
 
 CREATE TABLE cinema (
     cinema_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -21,14 +20,11 @@ CREATE TABLE cinema (
 
 
 CREATE TABLE movies (
-    movie_id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(150) NOT NULL,
+    movie_id INT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
     release_date DATE,
     duration_minutes INT,
-    distributor_id INT,
-    genre_id INT,
-    FOREIGN KEY (distributor_id) REFERENCES distributors(distributor_id),
-    FOREIGN KEY (genre_id) REFERENCES genres(genre_id)
+    distributor_id INT
 );
 
 
@@ -139,7 +135,6 @@ CREATE TABLE movie_genres (
     FOREIGN KEY (genre_id) REFERENCES genres(genre_id)
 );
 
-
 INSERT INTO cinema (cinema_id, name, city, state, address) VALUES
 (1,'Reserva Cultural / Belas Artes','São Paulo','SP','Rua da Consolação, 2423'),
 (2,'Cinemark Aricanduva','São Paulo','SP','Avenida Aricanduva, 5555'),
@@ -178,53 +173,89 @@ INSERT INTO genres (genre_id, name) VALUES
 (9,'Documentário'),
 (10,'Fantasia');
 
-INSERT INTO movies (movie_id, title, release_date, duration_minutes, distributor_id, genre_id) VALUES
-(1,'Capitão América: Um Novo Mundo','2025-02-12',140,1,1),
-(2,'Nosferatu','2025-01-22',125,2,6),
-(3,'Moana 2','2025-03-10',95,3,3),
-(4,'Sonic 3','2025-03-20',104,4,3),
-(5,'Mufasa: O Rei Leão','2025-03-25',112,5,3),
-(6,'Um Filme Minecraft','2025-04-02',98,6,3),
-(7,'Wicked','2025-02-18',121,7,5),
-(8,'Duna: Parte Dois','2025-02-05',129,8,2),
-(9,'O Robô Selvagem','2025-01-15',95,9,3),
-(10,'Deadpool & Wolverine','2025-04-28',137,10,1),
-(11,'Coringa: Loucura a Dois','2025-05-10',101,1,4),
-(12,'Avatar: O Último Mestre do Ar','2025-02-14',140,6,2),
-(13,'Thunderbolts','2025-05-02',99,7,1),
-(14,'Bailarina','2025-06-05',106,8,4),
-(15,'Aquaman e o Reino Perdido','2025-03-12',125,2,1),
-(16,'Superman: Legado','2025-07-11',89,2,1),
-(17,'Homem-Aranha: Além do Multiverso','2025-07-01',130,7,1),
-(18,'Os Quatro Fantásticos','2025-07-25',126,1,1),
-(19,'Blade','2025-11-07',119,5,1),
-(20,'Doutor Estranho 3','2025-10-15',91,6,1),
-(21,'Como Treinar Seu Dragão','2025-06-13',97,8,3),
-(22,'Branca de Neve','2025-03-21',96,10,3),
-(23,'Kraven o Caçador','2025-02-27',103,10,1),
-(24,'Divertida-Mente 2','2025-01-30',87,2,3),
-(25,'Gladiador II','2025-09-20',110,3,1),
-(26,'Vaiana 2','2025-04-11',123,4,3),
-(27,'Vermelho','2025-05-19',115,9,1),
-(28,'Creed III','2025-03-28',105,8,1),
-(29,'Pantera Negra 3','2025-08-18',100,4,1),
-(30,'Eternos 2','2025-09-12',114,3,1),
-(31,'Vingadores: O Apocalipse','2025-12-15',121,9,1),
-(32,'O Mandaloriano & Grogu','2025-10-22',128,7,2),
-(33,'A Zona de Interesse','2025-01-28',105,8,4),
-(34,'Queer','2025-04-14',135,6,4),
-(35,'Anora','2025-02-17',139,6,4),
-(36,'Priscilla','2025-06-29',113,9,4),
-(37,'Babygirl','2025-01-10',110,3,8),
-(38,'Nosferatu: Ascensão','2025-01-22',125,2,6),
-(39,'O Quarto de Jack','2025-02-28',108,8,4),
-(40,'Caça Selvagem','2025-03-14',150,7,1);
+INSERT INTO movies (movie_id, title, release_date, duration_minutes, distributor_id) VALUES
+(1,'Capitão América: Um Novo Mundo','2025-02-12',140,1),
+(2,'Nosferatu','2025-01-22',125,2),
+(3,'Moana 2','2025-03-10',95,3),
+(4,'Sonic 3','2025-03-20',104,4),
+(5,'Mufasa: O Rei Leão','2025-03-25',112,5),
+(6,'Um Filme Minecraft','2025-04-02',98,6),
+(7,'Wicked','2025-02-18',121,7),
+(8,'Duna: Parte Dois','2025-02-05',129,8),
+(9,'O Robô Selvagem','2025-01-15',95,9),
+(10,'Deadpool & Wolverine','2025-04-28',137,10),
+(11,'Coringa: Loucura a Dois','2025-05-10',101,1),
+(12,'Avatar: O Último Mestre do Ar','2025-02-14',140,6),
+(13,'Thunderbolts','2025-05-02',99,7),
+(14,'Bailarina','2025-06-05',106,8),
+(15,'Aquaman e o Reino Perdido','2025-03-12',125,2),
+(16,'Superman: Legado','2025-07-11',89,2),
+(17,'Homem-Aranha: Além do Multiverso','2025-07-01',130,7),
+(18,'Os Quatro Fantásticos','2025-07-25',126,1),
+(19,'Blade','2025-11-07',119,5),
+(20,'Doutor Estranho 3','2025-10-15',91,6),
+(21,'Como Treinar Seu Dragão','2025-06-13',97,8),
+(22,'Branca de Neve','2025-03-21',96,10),
+(23,'Kraven o Caçador','2025-02-27',103,10),
+(24,'Divertida-Mente 2','2025-01-30',87,2),
+(25,'Gladiador II','2025-09-20',110,3),
+(26,'Vaiana 2','2025-04-11',123,4),
+(27,'Vermelho','2025-05-19',115,9),
+(28,'Creed III','2025-03-28',105,8),
+(29,'Pantera Negra 3','2025-08-18',100,4),
+(30,'Eternos 2','2025-09-12',114,3),
+(31,'Vingadores: O Apocalipse','2025-12-15',121,9),
+(32,'O Mandaloriano & Grogu','2025-10-22',128,7),
+(33,'A Zona de Interesse','2025-01-28',105,8),
+(34,'Queer','2025-04-14',135,6),
+(35,'Anora','2025-02-17',139,6),
+(36,'Priscilla','2025-06-29',113,9),
+(37,'Babygirl','2025-01-10',110,3),
+(38,'Nosferatu: Ascensão','2025-01-22',125,2),
+(39,'O Quarto de Jack','2025-02-28',108,8),
+(40,'Caça Selvagem','2025-03-14',150,7);
 
 INSERT INTO movie_genres (movie_id, genre_id) VALUES
-(1,1),(2,6),(3,3),(4,3),(5,3),(6,3),(7,5),(8,2),(9,3),(10,1),
-(11,4),(12,2),(13,1),(14,4),(15,1),(16,1),(17,1),(18,1),(19,1),(20,1),
-(21,3),(22,3),(23,1),(24,3),(25,1),(26,3),(27,1),(28,4),(29,1),(30,1),
-(31,1),(32,2),(33,4),(34,8),(35,4),(36,4),(37,8),(38,6),(39,4),(40,1);
+(1,1),(1,2),(1,10),
+(2,6),(2,7),
+(3,3),(3,10),
+(4,3),(4,1),(4,2),
+(5,3),(5,10),(5,4),
+(6,3),(6,10),(6,1),
+(7,10),(7,8),(7,5),
+(8,2),(8,1),(8,10),
+(9,3),(9,2),(9,10),
+(10,1),(10,5),(10,2),
+(11,4),(11,7),(11,1),
+(12,10),(12,2),(12,1),
+(13,1),(13,2),(13,7),
+(14,4),(14,7),
+(15,1),(15,10),(15,2),
+(16,1),(16,10),(16,2),
+(17,1),(17,2),(17,10),
+(18,1),(18,2),(18,10),
+(19,1),(19,6),(19,7),
+(20,1),(20,10),(20,7),
+(21,3),(21,10),(21,1),
+(22,3),(22,8),(22,10),
+(23,1),(23,7),
+(24,3),(24,10),(24,5),
+(25,1),(25,4),(25,7),
+(26,3),(26,10),
+(27,1),(27,4),
+(28,1),(28,4),
+(29,1),(29,2),(29,10),
+(30,1),(30,10),(30,2),
+(31,1),(31,2),(31,10),
+(32,1),(32,2),(32,10),
+(33,4),(33,7),
+(34,4),(34,8),
+(35,4),(35,8),
+(36,4),(36,8),
+(37,4),(37,8),(37,5),
+(38,6),(38,7),
+(39,4),(39,7),
+(40,1),(40,7),(40,2);
 
 INSERT INTO movie_restrictions (movie_id, age_limit, explanation) VALUES
 (1,12,'Ação e linguagem moderada'),
