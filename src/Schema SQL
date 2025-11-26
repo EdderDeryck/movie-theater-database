@@ -400,6 +400,9 @@ INSERT INTO employees (employees_id, name, cinema_id, hire_date, role) VALUES
 (9,'Bruna',4,'2020-05-22','Atendente de Bilheteria'),
 (10,'Roberto',5,'2017-08-30','Gerente');
 
+INSERT INTO users (name, email)
+VALUES ('Teste Jarvis', 'jarvis@example.com');
+
 INSERT INTO tickets (ticket_id, showing_id, user_id, seat_number) VALUES
 (1,1,1,'A1'),
 (2,2,2,'B2'),
