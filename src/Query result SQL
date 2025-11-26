@@ -28,7 +28,7 @@ SELECT
     m.title AS filme,
     s.show_date AS data,
     s.show_time horario,
-    h.hall_number AS sala,
+    h.hall_number AS sala,  
     c.name AS cinema,
     t.seat_number AS numero_cinema
 FROM tickets t
