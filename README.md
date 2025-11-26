@@ -3,7 +3,7 @@
 ![Projeto Cinema](image.png)
 
 Banco de dados para gerenciamento de cinemas, filmes, sessões, promoções, usuários, ingressos e avaliações.  
-Todas as tabelas e consultas foram implementadas e testadas no **[DB Fiddle](https://www.db-fiddle.com/f/ejPtkA85edVn8gdDdewoRU/65#&togetherjs=VGoUFHKdoN)**.
+Todas as tabelas e consultas foram implementadas e testadas no **[DB Fiddle](https://www.db-fiddle.com/f/ejPtkA85edVn8gdDdewoRU/71#&togetherjs=mgoKDb0k54)**.
 
 ---
 
@@ -38,9 +38,10 @@ Todas as tabelas e consultas foram implementadas e testadas no **[DB Fiddle](htt
 
 ##  Consultas de Exemplo
 
-### 1. Filmes com distribuidor e restrição de idade
+### -- Consulta 1 -> Mostrar filmes com distribuidora e classificação indicativa
+
 ```sql
-SELECT m.title AS filme, d.name AS distribuidor, mr.age_limit, mr.explanation
+SELECT m.title AS filme, d.name AS distribuidor, mr.age_limit AS classificacao, mr.explanation AS motivo
 FROM movies m
 JOIN distributors d ON m.distributor_id = d.distributor_id
 JOIN movie_restrictions mr ON m.movie_id = mr.movie_id
